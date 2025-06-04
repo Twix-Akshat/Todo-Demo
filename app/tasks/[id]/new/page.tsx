@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import NewTaskForm from "./new-task-form"
-import getCategories from "../../edit/[id]/fetchCategories"
+import { getCategories } from "@/app/actions/updateTask"
 
 // Mock function to validate user exists - replace with your actual user validation
 async function validateUser(userId: string) {
@@ -14,11 +14,10 @@ async function validateUser(userId: string) {
 }
 
 
-
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function NewTaskPage({ params }: PageProps) {
