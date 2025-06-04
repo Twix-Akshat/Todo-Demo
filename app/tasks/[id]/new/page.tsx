@@ -12,8 +12,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, AlertCircle } from "lucide-react";
 import { headers } from "next/headers";
 
-export default async function Page(props:{params:Promise<{id:string}>}) {
-    const {id} = await props.params;
+export default async function Page({
+  params,
+}: {
+  params: { id: string }
+}) {
+    const { id } = params;
     const user_id = id; // Using the id from params as user_id
 
     async function createNewTask(formData: FormData) {

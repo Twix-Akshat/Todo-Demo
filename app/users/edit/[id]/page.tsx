@@ -3,37 +3,41 @@ import { userSchema } from "@/app/validation/userSchema";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-export default async function Page(props:{params:Promise<{id:string}>}) {
-    const {id} = await props.params;
-    const prisma = new PrismaClient();
-    const user = await prisma.users.findUnique({where:{id:parseInt(id)}});
+export default async function Page({
+  params,
+}: {
+  params: { id: string }
+}) {
+  const { id } = params;
+  const prisma = new PrismaClient();
+  const user = await prisma.users.findUnique({where:{id:parseInt(id)}});
 
 
-    async function updateUser(formData: FormData) {
-        "use server";
-        const rawData = {
-          name: formData.get("name"),
-          email: formData.get("email"),
-          password: formData.get("password"),
-        };
-      
-        const result = userSchema.safeParse(rawData);
-      
-        if (!result.success) {
-          console.error(result.error.format());
-          throw new Error("Validation failed");
-        }
-        const { name, email, password } = result.data;
-
-        const prisma = new PrismaClient();
-        await prisma.users.update({
-          data: { name, email, password },
-            where:{
-                id:parseInt(id)
-            }
-        });
-        redirect("/users");
+  async function updateUser(formData: FormData) {
+    "use server";
+    const rawData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+  
+    const result = userSchema.safeParse(rawData);
+  
+    if (!result.success) {
+      console.error(result.error.format());
+      throw new Error("Validation failed");
     }
+    const { name, email, password } = result.data;
+
+    const prisma = new PrismaClient();
+    await prisma.users.update({
+      data: { name, email, password },
+        where:{
+            id:parseInt(id)
+        }
+    });
+    redirect("/users");
+  }
 
   return (
     <div>
