@@ -12,13 +12,12 @@ import { TaskCheckbox } from "./checkbox"
 // Define a type for task priority
 type TaskPriority = "Low" | "Medium" | "High" | null
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
+interface PageProps {
   params: { id: string }
   searchParams?: { page?: string }
-}) {
+}
+
+export default async function Page({ params, searchParams }: PageProps)  {
   const { id } = params
   const page = Number.parseInt(searchParams?.page || "1")
   const pageSize = 5
