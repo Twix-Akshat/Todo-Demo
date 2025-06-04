@@ -14,13 +14,12 @@ async function validateUser(userId: string) {
 }
 
 
-interface PageProps {
-  params: Promise<{
-    id: string
-  }>
-}
 
-export default async function NewTaskPage({ params }: PageProps) {
+export default async function NewTaskPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
   const userId = (await params).id
 
   // Validate user exists
@@ -38,3 +37,4 @@ export default async function NewTaskPage({ params }: PageProps) {
     </Suspense>
   )
 }
+
