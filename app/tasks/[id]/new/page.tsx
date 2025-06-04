@@ -12,13 +12,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, AlertCircle } from "lucide-react";
 import { headers } from "next/headers";
 
-export default async function Page({
-  params,
-}: {
+interface PageProps {
   params: { id: string }
-}) {
-    const { id } = params;
-    const user_id = id; // Using the id from params as user_id
+}
+
+export default async function Page({ params }: PageProps) {
+  const { id } = params;
+  const user_id = id;
 
     async function createNewTask(formData: FormData) {
         "use server"
