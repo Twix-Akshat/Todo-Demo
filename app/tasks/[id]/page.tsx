@@ -5,25 +5,23 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import Pagination from "@/app/components/Pagination"
 import Link from "next/link"
-import { Calendar, Edit, Plus } from "lucide-react"
+import { Calendar, Edit, Plus } from 'lucide-react'
 import DeleteButton from "./delete_task_button"
 import { TaskCheckbox } from "./checkbox"
 
 // Define a type for task priority
 type TaskPriority = "Low" | "Medium" | "High" | null
 
-interface PageProps {
-  params: {
-    id: string
-  }
-  searchParams: {
-    page?: string
-  }
-}
-
-export default async function Page({ params, searchParams }: PageProps) {
-  const { id } = params
-  const page = Number.parseInt(searchParams?.page || "1")
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ page?: string }>
+}) {
+  const { id } = await params
+  const { page: pageParam } = await searchParams
+  const page = Number.parseInt(pageParam || "1")
   const pageSize = 5
   const prisma = new PrismaClient()
 
