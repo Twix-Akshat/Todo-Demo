@@ -13,8 +13,8 @@ import { TaskCheckbox } from "./checkbox"
 type TaskPriority = "Low" | "Medium" | "High" | null
 
 interface PageProps {
-  params: Promise<{ id: string }>
-  searchParams?: Promise<{ page?: string }>
+  params: { id: string }  // ❌ Old way
+  searchParams?: { page?: string }
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
