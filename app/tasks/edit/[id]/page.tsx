@@ -1,5 +1,3 @@
-
-
 // app/tasks/edit/[id]/page.tsx
 import { PrismaClient } from "@/app/generated/prisma"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -11,7 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { ArrowLeft, AlertCircle } from "lucide-react"
+import { ArrowLeft, AlertCircle } from 'lucide-react'
 import { updateTask } from "@/app/actions/updateTask"
 import getCategories from "./fetchCategories"
 
@@ -19,11 +17,12 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const { id } = params
-  const errors = searchParams.errors ? JSON.parse(searchParams.errors as string) : null
+  const { id } = await params
+  const searchParamsResolved = await searchParams
+  const errors = searchParamsResolved.errors ? JSON.parse(searchParamsResolved.errors as string) : null
 
   const prisma = new PrismaClient()
   const task = await prisma.tasks.findUnique({ where: { id: Number(id) } })
