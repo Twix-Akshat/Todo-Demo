@@ -6,9 +6,9 @@ import { redirect } from "next/navigation";
 export default async function Page({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params;
+  const { id } = await params;
   const prisma = new PrismaClient();
   const user = await prisma.users.findUnique({where:{id:parseInt(id)}});
 
@@ -48,7 +48,7 @@ export default async function Page({
           <tbody>
             <tr>
               <td>Name</td>
-              <td><input type="text" name="name"defaultValue={user?.name} /></td>
+              <td><input type="text" name="name" defaultValue={user?.name} /></td>
             </tr>
             <tr>
               <td>Email</td>
