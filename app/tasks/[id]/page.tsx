@@ -13,13 +13,15 @@ import { TaskCheckbox } from "./checkbox"
 type TaskPriority = "Low" | "Medium" | "High" | null
 
 interface PageProps {
-  params: { id: string }
-  searchParams?: { page?: string }
+  params: Promise<{ id: string }>
+  searchParams?: Promise<{ page?: string }>
 }
 
-export default async function Page({ params, searchParams }: PageProps)  {
-  const { id } = params
-  const page = Number.parseInt(searchParams?.page || "1")
+export default async function Page({ params, searchParams }: PageProps) {
+  // Await the params and searchParams
+  const { id } = await params
+  const resolvedSearchParams = await searchParams
+  const page = Number.parseInt(resolvedSearchParams?.page || "1")
   const pageSize = 5
   const prisma = new PrismaClient()
 
@@ -40,7 +42,7 @@ export default async function Page({ params, searchParams }: PageProps)  {
   // Add proper type for priority parameter
   const getPriorityColor = (priority: TaskPriority) => {
     if (!priority) return "border-l-gray-500 bg-gray-50"
-    
+
     switch (priority.toLowerCase()) {
       case "low":
         return "border-l-green-500 bg-green-50"
@@ -56,7 +58,7 @@ export default async function Page({ params, searchParams }: PageProps)  {
   // Add proper type for priority parameter
   const getPriorityBadge = (priority: TaskPriority) => {
     if (!priority) return "bg-gray-100 text-gray-800 hover:bg-gray-100"
-    
+
     switch (priority.toLowerCase()) {
       case "low":
         return "bg-green-100 text-green-800 hover:bg-green-100"
