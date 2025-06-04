@@ -12,16 +12,15 @@ import { TaskCheckbox } from "./checkbox"
 // Define a type for task priority
 type TaskPriority = "Low" | "Medium" | "High" | null
 
-interface PageProps {
-  params: { id: string }  // ❌ Old way
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: { id: string }
   searchParams?: { page?: string }
-}
-
-export default async function Page({ params, searchParams }: PageProps) {
-  // Await the params and searchParams
-  const { id } = await params
-  const resolvedSearchParams = await searchParams
-  const page = Number.parseInt(resolvedSearchParams?.page || "1")
+}) {
+  const { id } = params
+  const page = Number.parseInt(searchParams?.page || "1")
   const pageSize = 5
   const prisma = new PrismaClient()
 
